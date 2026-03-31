@@ -1,42 +1,52 @@
-# 💬 AI IT Helpdesk Assistant  
-### _Built with Streamlit + OpenAI_
+# AI IT Helpdesk Assistant (MVP)
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python)](https://www.python.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-App-red.svg?logo=streamlit)](https://streamlit.io/)
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![GitHub Repo](https://img.shields.io/badge/View_on-GitHub-black?logo=github)](https://github.com/Danieladamdelarosa/ai-it-helpdesk-assistant)
+A lightweight Streamlit app that triages IT helpdesk tickets using a rule-based engine with optional OpenAI-powered enrichment.
 
----
-
-### 🚀 About
-An **AI-powered IT support assistant** that classifies incoming tickets, suggests next-step troubleshooting, and decides when escalation is needed.  
-Designed to demonstrate **IT management + AI automation** skills for your professional portfolio.
-
----
-
-### 🧠 Features
-- Classifies tickets (Network / Hardware / Software / Account)  
-- Suggests relevant fixes or actions  
-- Detects when escalation is necessary  
-- Works **offline (rule-based)** or **online (LLM mode with OpenAI API)**  
-- Streamlit dashboard with CSV upload and JSON export  
-
----
-
-### 🧩 Quickstart
-```bash
-git clone https://github.com/Danieladamdelarosa/ai-it-helpdesk-assistant.git
-cd ai-it-helpdesk-assistant
-pip install -r requirements.txt
-streamlit run app.py
-# AI IT Helpdesk Assistant (Streamlit)
-A lightweight helpdesk assistant that classifies incoming IT issues, proposes next steps, and decides whether to escalate.
+## What this MVP does
+- Classifies tickets into `network`, `hardware`, `software`, or `account`.
+- Suggests actionable troubleshooting steps.
+- Recommends escalation when risk/persistence indicators are present.
+- Supports single-ticket and bulk CSV workflows.
+- Runs with or without an OpenAI API key.
 
 ## Quickstart
-1. Clone the repo.
-2. Copy `.env.example` → `.env` and add your API key.
-3. Run:
+1. Create and activate a virtual environment.
+2. Install dependencies.
+3. Copy `.env.example` to `.env`.
+4. Launch the app.
+
 ```bash
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+cp .env.example .env
 streamlit run app.py
 ```
+
+Open the local URL shown by Streamlit (usually `http://localhost:8501`).
+
+## Environment variables
+- `OPENAI_API_KEY` (optional): enables LLM mode.
+
+If no API key is present (or OpenAI initialization fails), the app automatically uses the rule-based engine.
+
+## CSV input format
+CSV must contain:
+- `subject`
+- `body`
+
+Optional:
+- `id`
+
+## Run tests
+```bash
+pytest -q
+```
+
+## Architecture
+See `docs/ARCHITECTURE.md` for a concise component map and design rationale.
+
+## Known production risks and next steps
+1. **Security**: No auth/RBAC yet; deploy behind SSO or API gateway before multi-user production.
+2. **Performance**: Bulk processing is synchronous in-process; add queue workers for large datasets.
+3. **Maintainability**: Rule sets are static in code; move to versioned config or admin-managed datastore.
